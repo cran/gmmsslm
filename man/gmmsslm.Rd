@@ -14,8 +14,8 @@ gmmsslm(
   type,
   iter.max = 500,
   eval.max = 500,
-  rel.tol = 1e-06,
-  sing.tol = 1e-20
+  rel.tol = 1e-15,
+  sing.tol = 1e-15
 )
 }
 \arguments{

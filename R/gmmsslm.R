@@ -46,7 +46,7 @@
 #' }
 #'
 
-gmmsslm <-function(dat,zm,pi,mu,sigma,xi=NULL,type,iter.max=500,eval.max=500,rel.tol=1e-6,sing.tol=1e-20){
+gmmsslm <-function(dat,zm,pi,mu,sigma,xi=NULL,type,iter.max=500,eval.max=500,rel.tol=1e-15,sing.tol=1e-15){
   Y<-dat
   g<-length(pi)
   p=dim(Y)[2]

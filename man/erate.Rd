@@ -24,10 +24,11 @@ The  error rate of the Bayes rule for a g-class Gaussian mixture model is given 
 \deqn{
 err(y;\theta)=1-\sum_{i=1}^g\pi_i Pr\{R(y;\theta)=i\mid Z \in C_i\}.
 }
-where
+Here, we write
 \deqn{
 Pr\{R(y;\theta) \in C_i\mid Z\in C_i\}=\frac{\sum_{j=1}^nI_{C_i}(z_j)Q[z_j,R(y;\theta) ]}{\sum_{j=1}^nI_{C_i}(z_j)},
 }
+where \eqn{Q[u,v]=1} if \eqn{u=v} and \eqn{Q[u,v]=0} otherwise, and \eqn{I_{C_i}(z_j)} is an indicator function for the \eqn{i}th class.
 }
 \examples{
 n<-150
