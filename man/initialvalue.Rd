@@ -39,8 +39,6 @@ xi<-c(-0.5,1)
 m<-rlabel(dat=dat$Y,pi=pi,mu=mu,sigma=sigma,xi=xi)
 zm<-dat$clust
 zm[m==1]<-NA
-inits<-initialvalue(g=4,zm=zm,dat=dat$Y,ncov=2)
-
-
+initlist<-initialvalue(g=4,zm=zm,dat=dat$Y,ncov=2)
 
 }

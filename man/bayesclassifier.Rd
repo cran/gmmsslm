@@ -4,12 +4,10 @@
 \alias{bayesclassifier}
 \title{Bayes' rule of allocation}
 \usage{
-bayesclassifier(dat, n, p, g, pi, mu, sigma)
+bayesclassifier(dat, p, g, pi = NULL, mu = NULL, sigma = NULL, paralist = NULL)
 }
 \arguments{
-\item{dat}{An \eqn{n\times p} matrix where each row represents an individual observation}
-
-\item{n}{Number of observations.}
+\item{dat}{An \eqn{n\times p} matrix where each row represents an individual observation.}
 
 \item{p}{Dimension of observation vecor.}
 
@@ -19,29 +17,35 @@ bayesclassifier(dat, n, p, g, pi, mu, sigma)
 
 \item{mu}{A \eqn{p \times g} matrix for the initial values of the location parameters.}
 
-\item{sigma}{A \eqn{p\times p} covariance matrix, or a list of g covariance matrices with dimension \eqn{p\times p \times g}.
+\item{sigma}{A \eqn{p\times p} covariance matrix,or a list of g covariance matrices with dimension \eqn{p\times p \times g}.
 It is assumed to fit the model with a common covariance matrix if \code{sigma} is a \eqn{p\times p} covariance matrix;
 otherwise it is assumed to fit the model with unequal covariance matrices.}
+
+\item{paralist}{A list containing the required parameters \eqn{(\pi, \mu, \Sigma)}.}
 }
 \value{
 \item{clust}{Class membership for the ith entity}
 }
 \description{
-Classifier specified by Bayes' rule
+Bayes' rule of allocation
 }
 \details{
+Classifier specified by Bayes' rule
+
+
 The classifier/Bayes rule of allocation \eqn{R(y_j;\theta)} assigns an entity with observation \eqn{y_j} to  class \eqn{C_k }(that is, \eqn{R(y_j;\theta)=k}) if
 \eqn{	k=\arg\max_i \tau_i(y_j;\theta),}
 }
 \examples{
-n<-150
-pi<-c(0.25,0.25,0.25,0.25)
-sigma<-array(0,dim=c(3,3,4))
-sigma[,,1]<-diag(1,3)
-sigma[,,2]<-diag(2,3)
-sigma[,,3]<-diag(3,3)
-sigma[,,4]<-diag(4,3)
-mu<-matrix(c(0.2,0.3,0.4,0.2,0.7,0.6,0.1,0.7,1.6,0.2,1.7,0.6),3,4)
-dat<-rmix(n=n,pi=pi,mu=mu,sigma=sigma)
-clust<-bayesclassifier(dat=dat$Y,n=150,p=3,g=4,mu=mu,sigma=sigma,pi=pi)
+n <- 150
+pi <- c(0.25, 0.25, 0.25, 0.25)
+sigma <- array(0, dim = c(3, 3, 4))
+sigma[, , 1] <- diag(1, 3)
+sigma[, , 2] <- diag(2, 3)
+sigma[, , 3] <- diag(3, 3)
+sigma[, , 4] <- diag(4, 3)
+mu <- matrix(c(0.2, 0.3, 0.4, 0.2, 0.7, 0.6, 0.1, 0.7, 1.6, 0.2, 1.7, 0.6), 3, 4)
+dat <- rmix(n = n, pi = pi, mu = mu, sigma = sigma)
+params <- list(pi=pi,mu = mu, sigma = sigma)
+clust <- bayesclassifier(dat=dat$Y,p=3,g=4,paralist=params)
 }

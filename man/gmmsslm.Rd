@@ -2,14 +2,15 @@
 % Please edit documentation in R/gmmsslm.R
 \name{gmmsslm}
 \alias{gmmsslm}
-\title{Fitting Gaussian mixture models}
+\title{Fitting Gaussian mixture model to a complete classified dataset or an incomplete classified dataset with/without the missing-data mechanism.}
 \usage{
 gmmsslm(
   dat,
   zm,
-  pi,
-  mu,
-  sigma,
+  pi = NULL,
+  mu = NULL,
+  sigma = NULL,
+  paralist = NULL,
   xi = NULL,
   type,
   iter.max = 500,
@@ -31,6 +32,8 @@ gmmsslm(
 It is assumed to fit the model with a common covariance matrix if \code{sigma} is a \eqn{p\times p} covariance matrix;
 otherwise it is assumed to fit the model with unequal covariance matrices.}
 
+\item{paralist}{A list containing the required parameters \eqn{(\pi, \mu, \Sigma)}.}
+
 \item{xi}{A 2-dimensional vector containing the initial values of the coefficients in the logistic function of the Shannon entropy.}
 
 \item{type}{Three types of Gaussian mixture models, 'ign' indicates fitting the model to a partially classified sample on the basis of the likelihood that ignores the missing label mechanism,
@@ -46,16 +49,22 @@ and 'com' indicate fitting the model to a completed classified sample.}
 \item{sing.tol}{Singular convergence tolerance; defaults to 1e-20.}
 }
 \value{
+A gmmsslmFit object containing the following slots:
 \item{objective}{Value of objective likelihood}
 \item{convergence}{Value of convergence}
-\item{iteration}{Number of iteration}
-\item{pi}{Estimated vector of the mixing proportions.}
-\item{mu}{Estimated matrix of the location parameters.}
-\item{sigma}{Estimated covariance matrix}
-\item{xi}{Estimated  coefficient vector for a logistic function of the Shannon entropy}
+\item{iteration}{Number of iterations}
+\item{obs}{Input data matrix}
+\item{n}{Number of observations}
+\item{p}{Number of variables}
+\item{g}{Number of Gaussian components}
+\item{type}{Type of Gaussian mixture model}
+\item{pi}{Estimated vector of the mixing proportions}
+\item{mu}{Estimated matrix of the location parameters}
+\item{sigma}{Estimated covariance matrix or list of covariance matrices}
+\item{xi}{Estimated coefficient vector for a logistic function of the Shannon entropy}
 }
 \description{
-Fitting Gaussian mixture model to a complete classified dataset or a incomplete classified dataset with/without the missing-data mechanism.
+Fitting Gaussian mixture model to a complete classified dataset or an incomplete classified dataset with/without the missing-data mechanism.
 }
 \examples{
 n<-150
@@ -73,7 +82,6 @@ zm<-dat$clust
 zm[m==1]<-NA
 inits<-initialvalue(g=4,zm=zm,dat=dat$Y)
 \donttest{
-fit_pc<-gmmsslm(dat=dat$Y,zm=zm,pi=inits$pi,mu=inits$mu,sigma=inits$sigma,xi=xi,type='full')
+fit_pc<-gmmsslm(dat=dat$Y,zm=zm,paralist=inits,xi=xi,type='full')
 }
-
 }

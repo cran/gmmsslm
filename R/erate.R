@@ -3,7 +3,14 @@
 #'Error rate of the Bayes rule for a g-class Gaussian mixture model
 #'
 #' @param dat An \eqn{n\times p} matrix where each row represents an individual observation
-#' @param parlist A list contains estimated \eqn{\pi}, \eqn{\mu} and \eqn{\sigma}.
+#' @param p Dimension of observation vecor.
+#' @param g Number of multivariate normal classes.
+#' @param pi A g-dimensional vector for the initial values of the mixing proportions.
+#' @param  mu A \eqn{p \times g} matrix for the initial values of the location parameters.
+#' @param sigma A \eqn{p\times p} covariance matrix,or a list of g covariance matrices with dimension \eqn{p\times p \times g}.
+#' It is assumed to fit the model with a common covariance matrix if \code{sigma} is a \eqn{p\times p} covariance matrix;
+#' otherwise it is assumed to fit the model with unequal covariance matrices.
+#' @param paralist A list containing the required parameters \eqn{(\pi, \mu, \Sigma)}.
 #' @param clust An n-dimensional vector of class partition.
 #' @return
 #' \item{errval}{a value of error rate}
@@ -35,15 +42,19 @@
 #' inits<-initialvalue(g=4,zm=zm,dat=dat$Y)
 #' \donttest{
 #' fit_pc<-gmmsslm(dat=dat$Y,zm=zm,pi=inits$pi,mu=inits$mu,sigma=inits$sigma,xi=xi,type='full')
-#' erate(dat=dat$Y,parlist=fit_pc,clust=dat$clust)
+#' parlist<-paraextract(fit_pc)
+#' erate(dat=dat$Y,p=3,g=4,paralist=parlist,clust=dat$clust)
 #' }
 #'
-erate<-function(dat,parlist,clust){
-  n<-dim(dat)[1]
-  p<-dim(dat)[2]
-  g<-length(parlist$parhat$pi)
-  est_clust<-bayesclassifier(dat,n,p,g,parlist$parhat$pi,parlist$parhat$mu,parlist$parhat$sigma)
+erate<-function(dat,p,g,pi=NULL,mu =NULL,sigma=NULL,paralist=NULL,clust){
+  if (!is.null(paralist)) {
+    pi <- paralist$pi
+    mu <- paralist$mu
+    sigma <- paralist$sigma
+  }
+  n <- dim(dat)[1]
+  est_clust<-bayesclassifier(dat,p=p,g=g,paralist=paralist)
   prob<-sapply(1:g,function(j)(1-sum(est_clust[clust==j]==j)/sum(clust==j)))
-  errval<-sum(parlist$parhat$pi*(prob))
+  errval<-sum(paralist$pi*(prob))
   return(errval)
 }

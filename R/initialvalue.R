@@ -26,39 +26,38 @@
 #' m<-rlabel(dat=dat$Y,pi=pi,mu=mu,sigma=sigma,xi=xi)
 #' zm<-dat$clust
 #' zm[m==1]<-NA
-#' inits<-initialvalue(g=4,zm=zm,dat=dat$Y,ncov=2)
+#' initlist<-initialvalue(g=4,zm=zm,dat=dat$Y,ncov=2)
 #'
-#'
-#'
-initialvalue <- function(dat,zm,g,ncov=2){
-  Y<-dat
-  #labelled indicators
-  k<-zm[is.na(zm)==FALSE]
-  Y<-as.matrix(Y)
-  p<- ncol(Y)
-  # labelled observations
-  Y<-as.matrix(Y[is.na(zm)==FALSE,])
-  # the number of labelled observation
+
+initialvalue <- function(dat, zm, g, ncov = 2) {
+  Y <- as.matrix(dat)
+  k <- zm[!is.na(zm)]
+  Y <- Y[!is.na(zm), ]
+  p <- ncol(Y)
   n <- length(k)
-  nn=NULL
-  pi=NULL
+
+  nn <- numeric(g)
+  pi <- numeric(g)
   mu <- matrix(0, p, g)
-  sigmaa<-array(0,dim=c(p,p,g))
-  for(i in 1:g){
-    nn[i]<-sum(k==i)
-    pi[i]<-nn[i]/n
-    mu[,i]<-apply(as.matrix(Y[k==i,]),2,mean)
-    mu[,i][is.nan(mu[,i])]=1
-    sigmaa[,,i] <- t(Y[k==i,]-mu[,i])%*%((Y[k==i,])-mu[,i])
+  sigmaa <- array(0, dim = c(p, p, g))
+
+  for (i in 1:g) {
+    nn[i] <- sum(k == i)
+    pi[i] <- nn[i] / n
+    mu[, i] <- colMeans(Y[k == i, ])
+    mu[, i][is.nan(mu[, i])] <- 1
+    sigmaa[, , i] <- t(Y[k == i, ] - mu[, i]) %*% (Y[k == i, ] - mu[, i])
   }
-  if(ncov==1){
-    sigma<-apply(sigmaa,c(1,2),sum)
-    sigma<-sigma/n
-  }else{
-    for(j in 1:g){
-      sigmaa[,,j]<-sigmaa[,,j]/nn[j]
+
+  if (ncov == 1) {
+    sigma <- apply(sigmaa, c(1, 2), sum) / n
+  } else {
+    for (j in 1:g) {
+      sigmaa[, , j] <- sigmaa[, , j] / nn[j]
     }
-    sigma<-sigmaa
+    sigma <- sigmaa
   }
-  return(list(pi=pi, mu=mu, sigma=sigma))
+
+  # Return an InitialValue object instead of a list
+  return(list(pi = pi, mu = mu, sigma = sigma))
 }

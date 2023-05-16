@@ -8,6 +8,7 @@
 #' @param pi A g-dimensional vector for the initial values of the mixing proportions.
 #' @param  mu A \eqn{p \times g} matrix for the initial values of the location parameters.
 #' @param sigma A \eqn{p\times p} covariance matrix,or a list of g covariance matrices with dimension \eqn{p\times p \times g}.
+#' @param paralist A list containing the required parameters \eqn{(\pi, \mu, \Sigma)}.
 #' It is assumed to fit the model with a common covariance matrix if \code{sigma} is a \eqn{p\times p} covariance matrix;
 #' otherwise it is assumed to fit the model with unequal covariance matrices.
 #' @return
@@ -31,10 +32,16 @@
 #' \deqn{e_j( y_j; \theta)=-\sum_{i=1}^g \tau_i( y_j; \theta) \log\tau_i(y_j;\theta).}
 
 
+get_entropy <- function(dat, n, p, g, pi = NULL, mu = NULL, sigma = NULL, paralist = NULL) {
+  if (!is.null(paralist)) {
+    pi <- paralist$pi
+    mu <- paralist$mu
+    sigma <- paralist$sigma
+  }
 
+  tau <- get_clusterprobs(dat = dat, n = n, p = p, g = g, mu = mu, sigma = sigma, pi = pi)
+  entropy <- apply(tau, 1, function(x) sum(ifelse(x == 0, 0, -x * log(x))))
 
-get_entropy <- function(dat, n, p, g, pi, mu, sigma){
-  tau <- get_clusterprobs(dat=dat, n=n, p=p, g=g, mu=mu, sigma=sigma,pi=pi)
-  entropy <- apply(tau, 1, function(x) sum(ifelse(x==0, 0,-x*log(x))))
   return(entropy)
 }
+

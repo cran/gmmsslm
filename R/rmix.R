@@ -2,7 +2,6 @@
 #'
 #' Generate random observations from the normal mixture distributions.
 #' @param  n Number of observations.
-#' @param pi A g-dimensional  initial vector of the mixing proportions.
 #' @param pi A g-dimensional vector for the initial values of the mixing proportions.
 #' @param  mu A \eqn{p \times g} matrix for the initial values of the location parameters.
 #' @param sigma A \eqn{p\times p} covariance matrix,or a list of g covariance matrices with dimension \eqn{p\times p \times g}.

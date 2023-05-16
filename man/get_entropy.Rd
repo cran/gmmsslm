@@ -4,7 +4,7 @@
 \alias{get_entropy}
 \title{Shannon entropy}
 \usage{
-get_entropy(dat, n, p, g, pi, mu, sigma)
+get_entropy(dat, n, p, g, pi = NULL, mu = NULL, sigma = NULL, paralist = NULL)
 }
 \arguments{
 \item{dat}{An \eqn{n\times p} matrix where each row represents an individual observation}
@@ -19,7 +19,9 @@ get_entropy(dat, n, p, g, pi, mu, sigma)
 
 \item{mu}{A \eqn{p \times g} matrix for the initial values of the location parameters.}
 
-\item{sigma}{A \eqn{p\times p} covariance matrix,or a list of g covariance matrices with dimension \eqn{p\times p \times g}.
+\item{sigma}{A \eqn{p\times p} covariance matrix,or a list of g covariance matrices with dimension \eqn{p\times p \times g}.}
+
+\item{paralist}{A list containing the required parameters \eqn{(\pi, \mu, \Sigma)}.
 It is assumed to fit the model with a common covariance matrix if \code{sigma} is a \eqn{p\times p} covariance matrix;
 otherwise it is assumed to fit the model with unequal covariance matrices.}
 }
