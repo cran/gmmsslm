@@ -4,7 +4,16 @@
 \alias{get_clusterprobs}
 \title{Posterior probability}
 \usage{
-get_clusterprobs(dat, n, p, g, pi, mu, sigma)
+get_clusterprobs(
+  dat,
+  n,
+  p,
+  g,
+  pi = NULL,
+  mu = NULL,
+  sigma = NULL,
+  paralist = NULL
+)
 }
 \arguments{
 \item{dat}{An \eqn{n\times p} matrix where each row represents an individual observation}
@@ -22,6 +31,8 @@ get_clusterprobs(dat, n, p, g, pi, mu, sigma)
 \item{sigma}{A \eqn{p\times p} covariance matrix,or a list of g covariance matrices with dimension \eqn{p\times p \times g}.
 It is assumed to fit the model with a common covariance matrix if \code{sigma} is a \eqn{p\times p} covariance matrix;
 otherwise it is assumed to fit the model with unequal covariance matrices.}
+
+\item{paralist}{A list containing the required parameters \eqn{(\pi, \mu, \Sigma)}.}
 }
 \value{
 \item{clusprobs}{Posterior probabilities of class membership for the ith entity}

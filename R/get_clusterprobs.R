@@ -10,6 +10,7 @@
 #' @param sigma A \eqn{p\times p} covariance matrix,or a list of g covariance matrices with dimension \eqn{p\times p \times g}.
 #' It is assumed to fit the model with a common covariance matrix if \code{sigma} is a \eqn{p\times p} covariance matrix;
 #' otherwise it is assumed to fit the model with unequal covariance matrices.
+#' @param paralist A list containing the required parameters \eqn{(\pi, \mu, \Sigma)}.
 #' @return
 #' \item{clusprobs}{Posterior probabilities of class membership for the ith entity}
 #' @details
@@ -33,7 +34,16 @@
 #' dat<-rmix(n=n,pi=pi,mu=mu,sigma=sigma)
 #'tau<-get_clusterprobs(dat=dat$Y,n=150,p=3,g=4,mu=mu,sigma=sigma,pi=pi)
 
-get_clusterprobs <- function(dat, n, p, g, pi,mu, sigma){
+get_clusterprobs <- function(dat, n, p, g, pi=NULL,mu =NULL,sigma=NULL,paralist=NULL){
+  if (!is.null(paralist)) {
+    pi <- paralist$pi
+    mu <- paralist$mu
+    sigma <- paralist$sigma
+  }else{
+    paralist$pi<-pi
+    paralist$mu<-mu
+    paralist$sigma<-sigma
+  }
   logdens<-matrix(0,n,g)
   ncov=ifelse(is.na(dim(sigma)[3]),1,2)
   if(ncov==1){

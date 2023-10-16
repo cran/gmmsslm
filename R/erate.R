@@ -51,6 +51,10 @@ erate<-function(dat,p,g,pi=NULL,mu =NULL,sigma=NULL,paralist=NULL,clust){
     pi <- paralist$pi
     mu <- paralist$mu
     sigma <- paralist$sigma
+  }else{
+    paralist$pi<-pi
+    paralist$mu<-mu
+    paralist$sigma<-sigma
   }
   n <- dim(dat)[1]
   est_clust<-bayesclassifier(dat,p=p,g=g,paralist=paralist)

@@ -38,6 +38,10 @@ bayesclassifier <- function(dat,p,g,pi=NULL,mu =NULL,sigma=NULL,paralist=NULL){
     pi <- paralist$pi
     mu <- paralist$mu
     sigma <- paralist$sigma
+  }else{
+    paralist$pi<-pi
+    paralist$mu<-mu
+    paralist$sigma<-sigma
   }
   if (is.null(dim(dat)[1])) {
     n <- 1
